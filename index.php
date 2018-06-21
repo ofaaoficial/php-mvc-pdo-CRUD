@@ -1,7 +1,7 @@
 <?php
 require_once('core/core.php');
 if(!isset($_REQUEST['c'])){
-	$controller = 'read';
+	$controller = 'administrator';
 	require_once('controllers/'.$controller.'Controller.php');
 	$controller = $controller . 'Controller';
 	$controller = new $controller;
