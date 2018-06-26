@@ -1,29 +1,25 @@
 <?php
-require_once('core/core.php');
-if(!isset($_REQUEST['c'])){
-	$controller = 'administrator';
-	require_once('controllers/'.$controller.'Controller.php');
-	$controller = $controller . 'Controller';
-	$controller = new $controller;
-	$controller->index();
+require_once 'core/core.php';
+
+$c = isset($_GET['c']) ? $_GET['c'] : 'administrator';
+$m = isset($_GET['m']) ? $_GET['m'] : 'index';
+$c .= 'Controller';
+
+if(file_exists('controllers/' . $c . '.php')){
+    require_once 'controllers/' . $c . '.php';
+    if(method_exists($c, $m)){
+        $c = new $c;
+        call_user_func([$c,$m]);
+    }else{
+        die("Error : El metodo o funcion [{$m}()] no existe");
+    }    
 }else{
-	$controller = $_REQUEST['c'];
-	if(file_exists('controllers/'.$controller.'Controller.php')){
-		require_once('controllers/'.$controller.'Controller.php');
-		$controller = $controller.'Controller';
-		$controller = new $controller;
-		$method = isset($_REQUEST['m']) ? $_REQUEST['m'] : 'index';
-			if(method_exists($controller,$method)){
-				call_user_func(array($controller,$method));	
-			}else{
-				echo 'Error - 1';
-			}
-	}else{
-		echo 'Error - 2';
-	}
+    die("Error : El controlador [{$c}] no existe.");
 }
+
 /*
 	CRUD creado por Oscar Amado
 	Contacto: oscarfamado@gmail.com
 */
+
 
